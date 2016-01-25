@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SharpSvn;
 using System.Windows;
 using System.IO;
+using System.Threading;
 using SVNCompare.Utility;
 
 namespace SVNCompare.Models
@@ -50,8 +51,7 @@ namespace SVNCompare.Models
         {
             Items = new List<CompareItem>();
         }
-
-
+        
 
         public void UpdateSVN()
         {
@@ -75,29 +75,32 @@ namespace SVNCompare.Models
                         if (client.Update(path, args, out result))
                         {
                             Items[i].lastUpdateMessage = "Updated to revision " + result.Revision + ".";
+                            Items[i].lastRevision = result.Revision;
                             Items[i].updateResult = CompareItemSVNUpdateResult.Success;
                         }
                         else
                         {
                             Items[i].lastUpdateMessage = "Failed to update.";
+                            Items[i].lastRevision = 0;
                             Items[i].updateResult = CompareItemSVNUpdateResult.Error;
                         }
                     }
                     catch (SvnException se)
                     {
                         Items[i].lastUpdateMessage = se.Message;
+                        Items[i].lastRevision = 0;
                         Items[i].updateResult = CompareItemSVNUpdateResult.Error;
                     }
                     catch (UriFormatException ufe)
                     {
                         Items[i].lastUpdateMessage = ufe.Message;
+                        Items[i].lastRevision = 0;
                         Items[i].updateResult = CompareItemSVNUpdateResult.Error;
                     }
                 }
             }
         }
-
-
+        
 
         private void _CompareFolders(DirectoryInfo dir, string subFolder, bool sourceToTarget, ref CompareResultItem result)
         {
@@ -107,6 +110,8 @@ namespace SVNCompare.Models
             // Uspoređujemo fajlove koje smo našli u ovom folderu
             foreach (FileInfo currentFile in currentFiles)
             {
+                // Thread.Sleep(500); TODO: za asinkroni test kasnije
+
                 string sourcePath, targetPath;
                 if (sourceToTarget)
                 {
@@ -118,29 +123,31 @@ namespace SVNCompare.Models
                     sourcePath = result.target.path + subFolder;
                     targetPath = result.source.path + subFolder;
                 }
-                EFileCompareResult fileCompareResult = Comparator.CompareFiles(currentFile, sourcePath, targetPath, !sourceToTarget);
+                EFileCompareResult fileCompareResult = FileComparator.CompareFiles(currentFile, sourcePath, targetPath, !sourceToTarget);
+
+                result.totalFiles++;
 
                 switch (fileCompareResult)
                 {
                     case EFileCompareResult.Identical:
-                        result.totalFiles++;
                         result.identicalFiles++;
                         result.Log.Add(String.Format("File \"{0}\" is identical.", currentFile.FullName));
                         break;
                     case EFileCompareResult.Different:
-                        result.totalFiles++;
                         result.differentFiles++;
                         result.Log.Add(String.Format("File \"{0}\" is different.", currentFile.FullName));
                         break;
-                    case EFileCompareResult.LeftUnique:
-                        result.totalFiles++;
-                        result.leftUniqueFiles++;
-                        result.Log.Add(String.Format("File \"{0}\" does not exist on path \"{1}\")", currentFile.FullName, result.target.path + subFolder));
-                        break;
-                    case EFileCompareResult.RightUnique:
-                        result.totalFiles++;
-                        result.rightUniqueFiles++;
-                        result.Log.Add(String.Format("File \"{0}\" does not exist on path \"{1}\")", currentFile.FullName, result.target.path + subFolder));
+                    case EFileCompareResult.Unique:
+                        if (sourceToTarget)
+                        {
+                            result.leftUniqueFiles++;
+                            result.Log.Add(String.Format("File \"{0}\" does not exist on path \"{1}\")", currentFile.FullName, result.target.path + subFolder));
+                        }
+                        else
+                        {
+                            result.rightUniqueFiles++;
+                            result.Log.Add(String.Format("File \"{0}\" does not exist on path \"{1}\")", currentFile.FullName, result.target.path + subFolder));
+                        }
                         break;
                 }
             }

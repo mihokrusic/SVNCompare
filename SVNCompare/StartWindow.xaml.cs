@@ -172,6 +172,7 @@ namespace SVNCompare
                 AddToOutput(String.Format("Comparing \"{0}\" with \"{1}\"", resultItem.source.path, resultItem.target.path));
                 foreach (string line in resultItem.Log)
                     AddToOutput(line);
+                AddToOutput(String.Format("Total files:         {0}", resultItem.totalFiles));
                 AddToOutput(String.Format("Identical files:     {0}", resultItem.identicalFiles));
                 AddToOutput(String.Format("Different files:     {0}", resultItem.differentFiles));
                 AddToOutput(String.Format("Left unique files:   {0}", resultItem.leftUniqueFiles));

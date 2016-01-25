@@ -7,20 +7,20 @@ using System.IO;
 
 namespace SVNCompare.Utility
 {
-    public enum EFileCompareResult { Ignore, Identical, Different, LeftUnique, RightUnique }
+    public enum EFileCompareResult { Ignore, Identical, Different, Unique }
 
-    public static class Comparator
+    public static class FileComparator
     {
-        public static EFileCompareResult CompareFiles(FileInfo sourceFile, string pathSource, string pathTarget, bool checkTargetUniqueFiles)
+        public static EFileCompareResult CompareFiles(FileInfo sourceFile, string pathSource, string pathTarget, bool checkOnlyUnique)
         {
             // Kreiramo full path na target lokaciji
             string filePathAtTarget = String.Format(@"{0}\{1}", pathTarget, sourceFile.Name);
 
             // Provjeravamo da fajl postoji na target lokaciji
             if (!File.Exists(filePathAtTarget))
-                return (checkTargetUniqueFiles ? EFileCompareResult.RightUnique : EFileCompareResult.LeftUnique);
+                return EFileCompareResult.Unique;
 
-            if (checkTargetUniqueFiles)
+            if (checkOnlyUnique)
                 return EFileCompareResult.Ignore;
 
             // Onda provjeravamo da im je veličina ista
@@ -30,7 +30,7 @@ namespace SVNCompare.Utility
                 return EFileCompareResult.Different;
 
             // Na kraju provjeravamo da su stvarno fajlovi isti
-            // TODO
+            // TODO: nedostaje dio za provjeru da su stvarno fajlovi razliciti ili isti ako imaju istu velicinu
 
             // Stvarno su fajlovi isti
             return EFileCompareResult.Identical;

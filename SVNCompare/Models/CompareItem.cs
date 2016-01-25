@@ -10,8 +10,9 @@ namespace SVNCompare.Models
 
     public class CompareItem
     {
-        public int position { get; private set; }
+        public int position { get; private set; } // TODO: ne potrebna veza sa UI, ukloniti
         public string path { get; private set; }
+        public long lastRevision { get; set; } 
         public string lastUpdateMessage { get; set; }
         public CompareItemSVNUpdateResult updateResult { get; set; }
 
