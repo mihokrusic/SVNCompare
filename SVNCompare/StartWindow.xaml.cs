@@ -32,10 +32,6 @@ namespace SVNCompare
 
             this.PreviewKeyDown += new KeyEventHandler(HandleEsc);
         }
-
-
-
-
         private void HandleEsc(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
@@ -58,10 +54,6 @@ namespace SVNCompare
                 rectCompareStatus.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFFFF"));
             }
         }
-
-
-
-
         private void ClearCompareUI()
         {
             for (int i = 0; i < 5; i++)
@@ -70,6 +62,11 @@ namespace SVNCompare
 
                 rectCompareStatus.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFFFF"));
             }
+        }
+        private void AddToOutput(string line)
+        {
+            //lbxOutput.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " - " + line);
+            lbxOutput.Items.Add(DateTime.Now.ToString("HH:mm:ss") + " - " + line);
         }
 
 
@@ -120,7 +117,7 @@ namespace SVNCompare
                 }
             }
 
-            lbxOutput.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " - " + "SVN update finished");
+            AddToOutput("SVN update finished");
         }
 
 
@@ -150,11 +147,10 @@ namespace SVNCompare
 
             _compareGroup.Compare(defaultIndex, out compareResults);
 
+
             // Ispisivanje rezultata
             foreach (CompareResultItem resultItem in compareResults)
             {
-                lbxOutput.Items.Insert(0, String.Format("Comparing \"{0}\" with \"{1}\"", resultItem.source.path, resultItem.target.path));
-
                 Rectangle rectCompareStatus = FindName("rectCompareStatus" + resultItem.target.position) as Rectangle;
 
                 switch (resultItem.result)
@@ -170,13 +166,18 @@ namespace SVNCompare
                         break;
                 }
 
-                foreach (string line in resultItem.Log)
-                {
-                    lbxOutput.Items.Insert(0, line);
-                }                
+                // Zapisujemo u output
+                AddToOutput(String.Format("Comparing \"{0}\" with \"{1}\"", resultItem.source.path, resultItem.target.path));
+                //foreach (string line in resultItem.Log)
+                //    AddToOutput(line);
+                AddToOutput(String.Format("Identical files:     {0}", resultItem.identicalFiles));
+                AddToOutput(String.Format("Different files:     {0}", resultItem.differentFiles));
+                AddToOutput(String.Format("Left unique files:   {0}", resultItem.leftUniqueFiles));
+                AddToOutput(String.Format("Right unique files:  {0}", resultItem.rightUniqueFiles));
+               
             }
 
-            lbxOutput.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " - " + "Folder compare finished");
+            AddToOutput("Folder compare finished");
         }
     }
 }
