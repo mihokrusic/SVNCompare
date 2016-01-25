@@ -93,7 +93,7 @@ namespace SVNCompare
             }
 
             // Radimo SVN update
-            _compareGroup.SVNUpdate();
+            _compareGroup.UpdateSVN();
 
             // Zapisujemo rezultate SVN update-a
             for (int i = 0; i < _compareGroup.Items.Count; i++)
@@ -128,24 +128,25 @@ namespace SVNCompare
         {
             // Čistimo UI
             ClearCompareUI();
+            lbxOutput.Items.Clear();
 
 
             // Uspoređivanje foldera
             List<CompareResultItem> compareResults;
-            int defaultIndex = 0;
+            int sourceIndex = 0;
 
             if (rbtnDefault1.IsChecked == true)
-                defaultIndex = 0;
+                sourceIndex = 0;
             else if (rbtnDefault2.IsChecked == true)
-                defaultIndex = 1;
-            else if (rbtnDefault2.IsChecked == true)
-                defaultIndex = 2;
-            else if (rbtnDefault2.IsChecked == true)
-                defaultIndex = 3;
-            else if (rbtnDefault2.IsChecked == true)
-                defaultIndex = 4;
+                sourceIndex = 1;
+            else if (rbtnDefault3.IsChecked == true)
+                sourceIndex = 2;
+            else if (rbtnDefault4.IsChecked == true)
+                sourceIndex = 3;
+            else if (rbtnDefault5.IsChecked == true)
+                sourceIndex = 4;
 
-            _compareGroup.Compare(defaultIndex, out compareResults);
+            _compareGroup.Compare(sourceIndex, out compareResults);
 
 
             // Ispisivanje rezultata
@@ -167,9 +168,10 @@ namespace SVNCompare
                 }
 
                 // Zapisujemo u output
+                AddToOutput(String.Format("**************************************************"));
                 AddToOutput(String.Format("Comparing \"{0}\" with \"{1}\"", resultItem.source.path, resultItem.target.path));
-                //foreach (string line in resultItem.Log)
-                //    AddToOutput(line);
+                foreach (string line in resultItem.Log)
+                    AddToOutput(line);
                 AddToOutput(String.Format("Identical files:     {0}", resultItem.identicalFiles));
                 AddToOutput(String.Format("Different files:     {0}", resultItem.differentFiles));
                 AddToOutput(String.Format("Left unique files:   {0}", resultItem.leftUniqueFiles));
