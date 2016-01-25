@@ -14,7 +14,7 @@ namespace SVNCompare
         public string path { get; private set; }
         public long lastRevision { get; set; } 
         public string lastUpdateMessage { get; set; }
-        public CompareItemSVNUpdateResult updateResult { get; set; }
+        public CompareItemSVNUpdateResult updateResult { get; set; } // TODO: preimenovati?
 
         public CompareItem(string path, int position)
         {

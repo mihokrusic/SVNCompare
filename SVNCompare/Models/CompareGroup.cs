@@ -110,7 +110,7 @@ namespace SVNCompare
             // Uspoređujemo fajlove koje smo našli u ovom folderu
             foreach (FileInfo currentFile in currentFiles)
             {
-                // Thread.Sleep(500); TODO: za asinkroni test kasnije
+                // Thread.Sleep(100); // TODO: za asinkroni test kasnije
 
                 // Compare datoteka
                 string sourcePath = (sourceToTarget ? result.source.path : result.target.path) + subFolder;
