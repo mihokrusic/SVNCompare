@@ -67,15 +67,22 @@
     </ApplicationDefinition>
     <Compile Include="Models\CompareGroup.cs" />
     <Compile Include="Models\CompareItem.cs" />
-    <Compile Include="StartWindow.xaml.cs">
+    <Compile Include="Views\StartWindow.xaml.cs">
       <DependentUpon>StartWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utility\Comparator.cs" />
-    <Page Include="StartWindow.xaml">
+    <Compile Include="Utility\FileComparator.cs" />
+    <Compile Include="Views\WorkingDialog.xaml.cs">
+      <DependentUpon>WorkingDialog.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\StartWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WorkingDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

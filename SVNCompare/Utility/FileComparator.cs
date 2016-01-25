@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace SVNCompare.Utility
+namespace SVNCompare
 {
     public enum EFileCompareResult { Ignore, Identical, Different, Unique }
 

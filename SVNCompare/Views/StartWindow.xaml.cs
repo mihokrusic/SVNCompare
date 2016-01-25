@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using SVNCompare.Models;
+using SVNCompare;
 
 namespace SVNCompare
 {
@@ -59,7 +59,6 @@ namespace SVNCompare
             for (int i = 0; i < 5; i++)
             {
                 Rectangle rectCompareStatus = FindName("rectCompareStatus" + (i + 1)) as Rectangle;
-
                 rectCompareStatus.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFFFF"));
             }
         }
@@ -181,6 +180,18 @@ namespace SVNCompare
             }
 
             AddToOutput("Folder compare finished");
+        }
+
+
+
+
+
+        private void btnTest_Click(object sender, RoutedEventArgs e)
+        {
+            WorkingDialog dialog = new WorkingDialog();
+            dialog.Title = "Working...";
+            dialog.Owner = this;
+            dialog.ShowDialog();            
         }
     }
 }

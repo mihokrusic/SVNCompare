@@ -8,9 +8,9 @@ using SharpSvn;
 using System.Windows;
 using System.IO;
 using System.Threading;
-using SVNCompare.Utility;
+using SVNCompare;
 
-namespace SVNCompare.Models
+namespace SVNCompare
 {
     public enum ECompareResult { Identical = 0, Different = 1 }
 
@@ -112,20 +112,13 @@ namespace SVNCompare.Models
             {
                 // Thread.Sleep(500); TODO: za asinkroni test kasnije
 
-                string sourcePath, targetPath;
-                if (sourceToTarget)
-                {
-                    sourcePath = result.source.path + subFolder;
-                    targetPath = result.target.path + subFolder;
-                }
-                else
-                {
-                    sourcePath = result.target.path + subFolder;
-                    targetPath = result.source.path + subFolder;
-                }
+                // Compare datoteka
+                string sourcePath = (sourceToTarget ? result.source.path : result.target.path) + subFolder;
+                string targetPath = (sourceToTarget ? result.target.path : result.source.path) + subFolder;
                 EFileCompareResult fileCompareResult = FileComparator.CompareFiles(currentFile, sourcePath, targetPath, !sourceToTarget);
 
-                result.totalFiles++;
+                if (fileCompareResult != EFileCompareResult.Ignore)
+                    result.totalFiles++;
 
                 switch (fileCompareResult)
                 {

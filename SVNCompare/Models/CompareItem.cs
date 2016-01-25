@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SVNCompare.Models
+namespace SVNCompare
 {
     public enum CompareItemSVNUpdateResult { None = 0, Success = 1, Error = 2 }
 
