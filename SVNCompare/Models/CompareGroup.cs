@@ -6,10 +6,29 @@ using System.Text;
 using System.Threading.Tasks;
 using SharpSvn;
 using System.Windows;
+using System.IO;
 
 namespace SVNCompare.Models
 {
-    class CompareGroup: IEnumerable<CompareItem>
+    public enum ECompareResult { Identical = 0, Different = 1 }
+
+    public class CompareResultItem
+    {
+        public CompareItem source { get; set; }
+        public CompareItem target { get; set; }
+        public ECompareResult result { get; set; }
+
+        public List<String> Log { get; set; }
+
+        public CompareResultItem()
+        {
+            Log = new List<String>();
+        }
+    }
+
+
+
+    public class CompareGroup : IEnumerable<CompareItem>
     {
         public List<CompareItem> Items;
         public IEnumerator<CompareItem> GetEnumerator() { return Items.GetEnumerator(); }
@@ -23,6 +42,8 @@ namespace SVNCompare.Models
         {
             Items = new List<CompareItem>();
         }
+
+
 
         public void SVNUpdate()
         {
@@ -66,6 +87,64 @@ namespace SVNCompare.Models
                     }
                 }
             }
+        }
+
+
+
+        public bool Compare(int baseIndex, out List<CompareResultItem> result)
+        {
+            List<CompareResultItem> compareResults = new List<CompareResultItem>();
+
+            for (int i = 0; i < Items.Count; i++)
+            {
+                // Preskačemo compare base lokacije sa samom sobom
+                if (i == baseIndex)
+                    continue;
+
+                // Kreiramo result item za ovu usporedbu
+                CompareResultItem compareResultItem = new CompareResultItem();
+                compareResultItem.source = Items[baseIndex];
+                compareResultItem.target = Items[i];
+
+                // Dohvaćamo sve fajlove u glavnom direktoriju
+                ECompareResult compareResult = ECompareResult.Identical;
+                DirectoryInfo dirInfo = new DirectoryInfo(compareResultItem.source.path);
+                FileInfo[] files = dirInfo.GetFiles("*.*");
+
+                foreach (FileInfo sourceFile in files)
+                {
+                    string filePathAtTarget = compareResultItem.target.path + @"\" + sourceFile.Name;
+
+                    // Prvo provjeravamo da fajl postoji na target lokaciji
+                    if (!File.Exists(filePathAtTarget))
+                    {
+                        compareResult = ECompareResult.Different;
+                        compareResultItem.Log.Add("File \"" + sourceFile.Name + "\" does not exists on path \"" + compareResultItem.target.path + "\".");
+                        continue;
+                    }
+
+                    // Onda provjeravamo da im je veličina ista
+                    FileInfo targetFile = new FileInfo(filePathAtTarget);
+
+                    if (targetFile.Length != sourceFile.Length)
+                    {
+                        compareResult = ECompareResult.Different;
+                        compareResultItem.Log.Add("File \"" + sourceFile.Name + "\" is different.");
+                        continue;
+                    }
+
+                    // Na kraju provjeravamo da su stvarno fajlovi isti
+
+                    compareResultItem.Log.Add("File \"" + sourceFile.Name + "\" is identical.");
+                }
+
+                compareResultItem.result = compareResult;
+                compareResults.Add(compareResultItem);
+
+            }
+
+            result = compareResults;
+            return true;
         }
     }
 }

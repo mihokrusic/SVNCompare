@@ -47,10 +47,8 @@ namespace SVNCompare
 
         private void ClearUI()
         {
-            // Dodajemo iteme i restartamo labele/rectangle
             for (int i = 0; i < 5; i++)
             {
-                // Brišemo labele i rectangle
                 Label lblControl = FindName("lblStatus" + (i + 1)) as Label;
                 Rectangle rectUpdateStatus = FindName("rectUpdateStatus" + (i + 1)) as Rectangle;
                 Rectangle rectCompareStatus = FindName("rectCompareStatus" + (i + 1)) as Rectangle;
@@ -64,9 +62,23 @@ namespace SVNCompare
 
 
 
+        private void ClearCompareUI()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                Rectangle rectCompareStatus = FindName("rectCompareStatus" + (i + 1)) as Rectangle;
+
+                rectCompareStatus.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFFFF"));
+            }
+        }
+
+
+
+
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
+            // Čistimo UI
             ClearUI();
 
             // Kreiramo objekt za compare direktorija
@@ -75,12 +87,12 @@ namespace SVNCompare
             _compareGroup.Items.Clear();
 
             // Dodajemo iteme 
-            for (int i = 0; i < 5; i++)
+            for (int i = 1; i <= 5; i++)
             {
-                TextBox txtControl = FindName("txtFolder" + (i + 1)) as TextBox;
+                TextBox txtControl = FindName("txtFolder" + i) as TextBox;
 
                 if (txtControl.Text.Trim() != "")
-                    _compareGroup.Items.Add(new CompareItem(txtControl.Text, i + 1));
+                    _compareGroup.Items.Add(new CompareItem(txtControl.Text, i));
             }
 
             // Radimo SVN update
@@ -117,6 +129,53 @@ namespace SVNCompare
 
         private void btnCompare_Click(object sender, RoutedEventArgs e)
         {
+            // Čistimo UI
+            ClearCompareUI();
+
+
+            // Uspoređivanje foldera
+            List<CompareResultItem> compareResults;
+            int defaultIndex = 0;
+
+            if (rbtnDefault1.IsChecked == true)
+                defaultIndex = 0;
+            else if (rbtnDefault2.IsChecked == true)
+                defaultIndex = 1;
+            else if (rbtnDefault2.IsChecked == true)
+                defaultIndex = 2;
+            else if (rbtnDefault2.IsChecked == true)
+                defaultIndex = 3;
+            else if (rbtnDefault2.IsChecked == true)
+                defaultIndex = 4;
+
+            _compareGroup.Compare(defaultIndex, out compareResults);
+
+            // Ispisivanje rezultata
+            foreach (CompareResultItem resultItem in compareResults)
+            {
+                lbxOutput.Items.Insert(0, String.Format("Comparing \"{0}\" with \"{1}\"", resultItem.source.path, resultItem.target.path));
+
+                Rectangle rectCompareStatus = FindName("rectCompareStatus" + resultItem.target.position) as Rectangle;
+
+                switch (resultItem.result)
+                {
+                    case ECompareResult.Identical:
+                        rectCompareStatus.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF14B222"));
+                        break;
+                    case ECompareResult.Different:
+                        rectCompareStatus.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFB95B3F"));
+                        break;
+                    default:
+                        rectCompareStatus.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFFFF"));
+                        break;
+                }
+
+                foreach (string line in resultItem.Log)
+                {
+                    lbxOutput.Items.Insert(0, line);
+                }                
+            }
+
             lbxOutput.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " - " + "Folder compare finished");
         }
     }
