@@ -19,20 +19,20 @@
         <Rectangle x:Name="rectUpdateStatus3" Fill="Black" HorizontalAlignment="Left" Height="23" Margin="462,84,0,0" Stroke="Black" VerticalAlignment="Top" Width="23"/>
         <Rectangle x:Name="rectUpdateStatus4" Fill="Black" HorizontalAlignment="Left" Height="23" Margin="462,112,0,0" Stroke="Black" VerticalAlignment="Top" Width="23"/>
         <Rectangle x:Name="rectUpdateStatus5" Fill="Black" HorizontalAlignment="Left" Height="23" Margin="462,140,0,0" Stroke="Black" VerticalAlignment="Top" Width="23"/>
-        <Label x:Name="lblStatus1" Content="" Margin="564,28,10,0" VerticalAlignment="Top" Background="#00000000"/>
-        <Label x:Name="lblStatus2" Content="" Margin="564,56,10,0" VerticalAlignment="Top" Background="#00000000"/>
-        <Label x:Name="lblStatus3" Content="" Margin="564,84,10,0" VerticalAlignment="Top" Background="#00000000"/>
-        <Label x:Name="lblStatus4" Content="" Margin="564,112,10,0" VerticalAlignment="Top" Background="#00000000"/>
-        <Label x:Name="lblStatus5" Content="" Margin="564,140,10,0" VerticalAlignment="Top" Background="#00000000"/>
-        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="10,168,0,0" VerticalAlignment="Top" Width="99" Height="39" TabIndex="12" Click="btnUpdate_Click"/>
-        <Button x:Name="btnCompare" Content="Compare" HorizontalAlignment="Left" Margin="114,168,0,0" VerticalAlignment="Top" Width="99" Height="39" TabIndex="13" Click="btnCompare_Click"/>
+        <Label x:Name="lblStatus1" Content="" Margin="564,28,500,0" VerticalAlignment="Top" Background="#00000000"/>
+        <Label x:Name="lblStatus2" Content="" Margin="564,56,500,0" VerticalAlignment="Top" Background="#00000000"/>
+        <Label x:Name="lblStatus3" Content="" Margin="564,84,500,0" VerticalAlignment="Top" Background="#00000000"/>
+        <Label x:Name="lblStatus4" Content="" Margin="564,112,500,0" VerticalAlignment="Top" Background="#00000000"/>
+        <Label x:Name="lblStatus5" Content="" Margin="564,140,500,0" VerticalAlignment="Top" Background="#00000000"/>
+        <Button x:Name="btnCompare" Content="Compare" HorizontalAlignment="Left" Margin="10,168,0,0" VerticalAlignment="Top" Width="99" Height="39" TabIndex="13" Click="btnCompare_Click"/>
         <ListBox x:Name="lbxOutput" Margin="10,212,10,10" TabIndex="14" FontFamily="Courier New"/>
         <Rectangle x:Name="rectCompareStatus1" Fill="Black" HorizontalAlignment="Left" Height="23" Margin="490,30,0,0" Stroke="Black" VerticalAlignment="Top" Width="68"/>
         <Rectangle x:Name="rectCompareStatus2" Fill="Black" HorizontalAlignment="Left" Height="23" Margin="490,56,0,0" Stroke="Black" VerticalAlignment="Top" Width="68"/>
         <Rectangle x:Name="rectCompareStatus3" Fill="Black" HorizontalAlignment="Left" Height="23" Margin="490,84,0,0" Stroke="Black" VerticalAlignment="Top" Width="68"/>
         <Rectangle x:Name="rectCompareStatus4" Fill="Black" HorizontalAlignment="Left" Height="23" Margin="490,112,0,0" Stroke="Black" VerticalAlignment="Top" Width="68"/>
         <Rectangle x:Name="rectCompareStatus5" Fill="Black" HorizontalAlignment="Left" Height="23" Margin="490,140,0,0" Stroke="Black" VerticalAlignment="Top" Width="68"/>
-        <Button x:Name="btnTest" Content="Test" HorizontalAlignment="Left" Margin="297,168,0,0" VerticalAlignment="Top" Width="99" Height="39" TabIndex="13" Click="btnTest_Click" />
+        <Button x:Name="btnTest" Content="Test" HorizontalAlignment="Left" Margin="504,168,0,0" VerticalAlignment="Top" Width="99" Height="39" TabIndex="13" Click="btnTest_Click" />
+        <CheckBox x:Name="chkUpdateSVN" Content="Update working copies" HorizontalAlignment="Left" Margin="114,181,0,0" VerticalAlignment="Top" IsChecked="True"/>
 
     </Grid>
 </Window>

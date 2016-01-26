@@ -36,9 +36,24 @@ namespace SVNCompare
     }
 
 
+    public class CompareGroupArguments
+    {
+        public List<String> IgnoreDirectories { get; set; }
+        public List<String> IgnoreFiles { get; set; }
+
+        public CompareGroupArguments()
+        {
+            IgnoreDirectories = new List<String>();
+            IgnoreFiles = new List<String>();
+        }
+    }
+
+
 
     public class CompareGroup : IEnumerable<CompareItem>
     {
+        private CompareGroupArguments _args;
+
         public List<CompareItem> Items;
         public IEnumerator<CompareItem> GetEnumerator() { return Items.GetEnumerator(); }
         IEnumerator IEnumerable.GetEnumerator()
@@ -110,6 +125,10 @@ namespace SVNCompare
             // Uspoređujemo fajlove koje smo našli u ovom folderu
             foreach (FileInfo currentFile in currentFiles)
             {
+                // Izbacujemo fileove koji su na ignore listi
+                if (_args.IgnoreFiles.Contains(currentFile.Name, StringComparer.OrdinalIgnoreCase))
+                    continue;
+
                 // Thread.Sleep(100); // TODO: za asinkroni test kasnije
 
                 // Compare datoteka
@@ -148,8 +167,8 @@ namespace SVNCompare
             // Idemo po svim folderima i rekurzivno i njih pretražujemo
             foreach (DirectoryInfo dirChild in currentDirectories)
             {
-                // TODO: zasad fiksno izbacujemo direktorij .svn
-                if (dirChild.Name == ".svn")
+                // Izbacujemo direktorije
+                if (_args.IgnoreDirectories.Contains(dirChild.Name, StringComparer.OrdinalIgnoreCase))
                     continue;
 
                 _CompareFolders(dirChild, subFolder + dirChild.Name + @"\", sourceToTarget, ref result);
@@ -157,8 +176,9 @@ namespace SVNCompare
         }
 
 
-        public bool Compare(int baseIndex, out List<CompareResultItem> result)
+        public bool Compare(int baseIndex, CompareGroupArguments args, out List<CompareResultItem> result)
         {
+            this._args = args;
             List<CompareResultItem> compareResults = new List<CompareResultItem>();
 
             // Dohvaćamo sve fajlove u source direktoriju

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
 using SVNCompare;
 
 namespace SVNCompare
@@ -53,34 +54,62 @@ namespace SVNCompare
                 rectUpdateStatus.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFFFF"));
                 rectCompareStatus.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFFFF"));
             }
-        }
-        private void ClearCompareUI()
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                Rectangle rectCompareStatus = FindName("rectCompareStatus" + (i + 1)) as Rectangle;
-                rectCompareStatus.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFFFF"));
-            }
+
+            lbxOutput.Items.Clear();
         }
         private void AddToOutput(string line)
         {
             //lbxOutput.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " - " + line);
             lbxOutput.Items.Add(DateTime.Now.ToString("HH:mm:ss") + " - " + line);
         }
+        private void LoadIgnoreFilters(ref CompareGroupArguments args)
+        {
+            try
+            {   
+                using (StreamReader sr = new StreamReader("IgnoreFilters.txt"))
+                {
+                    String line = sr.ReadLine();
+                    while (line != null)
+                    {
+                        Console.WriteLine(line);
+                        switch (line.Substring(0, 1))
+                        {
+                            case "D":
+                                args.IgnoreDirectories.Add(line.Substring(3));
+                                break;
+                            case "F":
+                                args.IgnoreFiles.Add(line.Substring(3));
+                                break;
+                            default:
+                                break;
+                        }
+
+                        line = sr.ReadLine();
+                    }
+                }
+            }
+            catch (FileNotFoundException e)
+            {
+            }
+        }
 
 
 
 
 
-        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        private void btnCompare_Click(object sender, RoutedEventArgs e)
         {
             // Čistimo UI
             ClearUI();
 
+
             // Kreiramo objekt za compare direktorija
             if (_compareGroup == null)
+            {                
                 _compareGroup = new CompareGroup();
+            }
             _compareGroup.Items.Clear();
+
 
             // Dodajemo iteme 
             for (int i = 1; i <= 5; i++)
@@ -91,43 +120,37 @@ namespace SVNCompare
                     _compareGroup.Items.Add(new CompareItem(txtControl.Text, i));
             }
 
+
             // Radimo SVN update
-            _compareGroup.UpdateSVN();
-
-            // Zapisujemo rezultate SVN update-a
-            for (int i = 0; i < _compareGroup.Items.Count; i++)
+            if (chkUpdateSVN.IsChecked == true)
             {
-                Label lblControl = FindName("lblStatus" + _compareGroup.Items[i].position) as Label;
-                Rectangle rectUpdateStatus = FindName("rectUpdateStatus" + _compareGroup.Items[i].position) as Rectangle;
+                _compareGroup.UpdateSVN();
 
-                lblControl.Content = _compareGroup.Items[i].lastUpdateMessage;
 
-                switch (_compareGroup.Items[i].updateResult)
+                // Zapisujemo rezultate SVN update-a
+                for (int i = 0; i < _compareGroup.Items.Count; i++)
                 {
-                    case CompareItemSVNUpdateResult.Success:
-                        rectUpdateStatus.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF14B222"));
-                        break;
-                    case CompareItemSVNUpdateResult.Error:
-                        rectUpdateStatus.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFB95B3F"));
-                        break;
-                    default:
-                        rectUpdateStatus.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFFFF"));
-                        break;
+                    Label lblControl = FindName("lblStatus" + _compareGroup.Items[i].position) as Label;
+                    Rectangle rectUpdateStatus = FindName("rectUpdateStatus" + _compareGroup.Items[i].position) as Rectangle;
+
+                    lblControl.Content = _compareGroup.Items[i].lastUpdateMessage;
+
+                    switch (_compareGroup.Items[i].updateResult)
+                    {
+                        case CompareItemSVNUpdateResult.Success:
+                            rectUpdateStatus.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF14B222"));
+                            break;
+                        case CompareItemSVNUpdateResult.Error:
+                            rectUpdateStatus.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFB95B3F"));
+                            break;
+                        default:
+                            rectUpdateStatus.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFFFF"));
+                            break;
+                    }
                 }
+
+                AddToOutput("SVN update finished");
             }
-
-            AddToOutput("SVN update finished");
-        }
-
-
-
-
-
-        private void btnCompare_Click(object sender, RoutedEventArgs e)
-        {
-            // Čistimo UI
-            ClearCompareUI();
-            lbxOutput.Items.Clear();
 
 
             // Uspoređivanje foldera
@@ -145,7 +168,12 @@ namespace SVNCompare
             else if (rbtnDefault5.IsChecked == true)
                 sourceIndex = 4;
 
-            _compareGroup.Compare(sourceIndex, out compareResults);
+            
+            // Punimo ignore filtere
+            CompareGroupArguments args = new CompareGroupArguments();
+            LoadIgnoreFilters(ref args);
+
+            _compareGroup.Compare(sourceIndex, args, out compareResults);
 
 
             // Ispisivanje rezultata
@@ -167,15 +195,14 @@ namespace SVNCompare
                 }
 
                 // Zapisujemo u output
-                AddToOutput(String.Format("**************************************************"));
-                AddToOutput(String.Format("Comparing \"{0}\" with \"{1}\"", resultItem.source.path, resultItem.target.path));
+                AddToOutput(String.Format("  Comparing \"{0}\" with \"{1}\"", resultItem.source.path, resultItem.target.path));
                 foreach (string line in resultItem.Log)
-                    AddToOutput(line);
-                AddToOutput(String.Format("Total files:         {0}", resultItem.totalFiles));
-                AddToOutput(String.Format("Identical files:     {0}", resultItem.identicalFiles));
-                AddToOutput(String.Format("Different files:     {0}", resultItem.differentFiles));
-                AddToOutput(String.Format("Left unique files:   {0}", resultItem.leftUniqueFiles));
-                AddToOutput(String.Format("Right unique files:  {0}", resultItem.rightUniqueFiles));
+                    AddToOutput("    " + line);
+                AddToOutput(String.Format("    Total files:         {0}", resultItem.totalFiles));
+                AddToOutput(String.Format("    Identical files:     {0}", resultItem.identicalFiles));
+                AddToOutput(String.Format("    Different files:     {0}", resultItem.differentFiles));
+                AddToOutput(String.Format("    Left unique files:   {0}", resultItem.leftUniqueFiles));
+                AddToOutput(String.Format("    Right unique files:  {0}", resultItem.rightUniqueFiles));
                
             }
 
