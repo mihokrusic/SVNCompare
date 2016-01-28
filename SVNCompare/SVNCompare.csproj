@@ -67,6 +67,9 @@
     </ApplicationDefinition>
     <Compile Include="Models\CompareGroup.cs" />
     <Compile Include="Models\CompareItem.cs" />
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StartWindow.xaml.cs">
       <DependentUpon>StartWindow.xaml</DependentUpon>
     </Compile>
@@ -78,6 +81,10 @@
     <Compile Include="Views\WorkingDialog.xaml.cs">
       <DependentUpon>WorkingDialog.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\StartWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -16,19 +16,22 @@ namespace SVNCompare
 
     public class CompareResultItem
     {
-        public CompareItem source { get; set; }
-        public CompareItem target { get; set; }
+        public CompareItem source { get; private set; }
+        public CompareItem target { get; private set; }
+        
         public ECompareResult result { get; set; }
         public List<String> Log { get; set; }
-
         public int totalFiles { get; set; }
         public int identicalFiles { get; set; }
         public int differentFiles { get; set; }
         public int leftUniqueFiles { get; set; }
         public int rightUniqueFiles { get; set; }
 
-        public CompareResultItem()
+        public CompareResultItem(CompareItem source, CompareItem target)
         {
+            this.source = source;
+            this.target = target;
+
             Log = new List<String>();
 
             identicalFiles = differentFiles = leftUniqueFiles = rightUniqueFiles = 0;
@@ -122,6 +125,16 @@ namespace SVNCompare
             DirectoryInfo[] currentDirectories = dir.GetDirectories("*");
             FileInfo[] currentFiles = dir.GetFiles("*.*");
 
+            // Idemo po svim folderima i rekurzivno i njih pretražujemo
+            foreach (DirectoryInfo dirChild in currentDirectories)
+            {
+                // Izbacujemo direktorije
+                if (_args.IgnoreDirectories.Contains(dirChild.Name, StringComparer.OrdinalIgnoreCase))
+                    continue;
+
+                _CompareFolders(dirChild, Path.Combine(subFolder, dirChild.Name, @"\"), sourceToTarget, ref result);
+            }
+
             // Uspoređujemo fajlove koje smo našli u ovom folderu
             foreach (FileInfo currentFile in currentFiles)
             {
@@ -163,16 +176,6 @@ namespace SVNCompare
                         break;
                 }
             }
-
-            // Idemo po svim folderima i rekurzivno i njih pretražujemo
-            foreach (DirectoryInfo dirChild in currentDirectories)
-            {
-                // Izbacujemo direktorije
-                if (_args.IgnoreDirectories.Contains(dirChild.Name, StringComparer.OrdinalIgnoreCase))
-                    continue;
-
-                _CompareFolders(dirChild, subFolder + dirChild.Name + @"\", sourceToTarget, ref result);
-            }
         }
 
 
@@ -194,9 +197,7 @@ namespace SVNCompare
                 DirectoryInfo targetRoot = new DirectoryInfo(Items[i].path);
 
                 // Kreiramo result item za usporedbu ove lokacije sa source lokacijom
-                CompareResultItem compareResultItem = new CompareResultItem();
-                compareResultItem.source = Items[baseIndex];
-                compareResultItem.target = Items[i];
+                CompareResultItem compareResultItem = new CompareResultItem(Items[baseIndex], Items[i]);
 
                 // Uspoređujemo source --> target
                 _CompareFolders(sourceRoot, @"\", true, ref compareResultItem);

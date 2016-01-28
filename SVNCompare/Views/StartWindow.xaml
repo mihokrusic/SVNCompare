@@ -31,8 +31,8 @@
         <Rectangle x:Name="rectCompareStatus3" Fill="Black" HorizontalAlignment="Left" Height="23" Margin="490,84,0,0" Stroke="Black" VerticalAlignment="Top" Width="68"/>
         <Rectangle x:Name="rectCompareStatus4" Fill="Black" HorizontalAlignment="Left" Height="23" Margin="490,112,0,0" Stroke="Black" VerticalAlignment="Top" Width="68"/>
         <Rectangle x:Name="rectCompareStatus5" Fill="Black" HorizontalAlignment="Left" Height="23" Margin="490,140,0,0" Stroke="Black" VerticalAlignment="Top" Width="68"/>
-        <Button x:Name="btnTest" Content="Test" HorizontalAlignment="Left" Margin="504,168,0,0" VerticalAlignment="Top" Width="99" Height="39" TabIndex="13" Click="btnTest_Click" />
         <CheckBox x:Name="chkUpdateSVN" Content="Update working copies" HorizontalAlignment="Left" Margin="114,181,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        <Button x:Name="btnIgnoreFilters" Content="Ignore filters" HorizontalAlignment="Left" Margin="386,168,0,0" VerticalAlignment="Top" Width="99" Height="39" TabIndex="13" Click="btnIgnoreFilters_Click" />
 
     </Grid>
 </Window>

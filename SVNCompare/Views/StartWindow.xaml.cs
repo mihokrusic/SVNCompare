@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
+using System.Diagnostics;
 using SVNCompare;
 
 namespace SVNCompare
@@ -219,6 +220,12 @@ namespace SVNCompare
             dialog.Title = "Working...";
             dialog.Owner = this;
             dialog.ShowDialog();            
+        }
+
+        private void btnIgnoreFilters_Click(object sender, RoutedEventArgs e)
+        {
+            Environment.CurrentDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+            Process.Start("IgnoreFilters.txt");
         }
     }
 }
