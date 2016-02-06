@@ -12,22 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace SVNCompare
+namespace SVNCompare.Views
 {
     /// <summary>
-    /// Interaction logic for WorkingDialog.xaml
+    /// Interaction logic for MainView.xaml
     /// </summary>
-    public partial class WorkingDialog : Window
+    public partial class MainView : Window
     {
-        public WorkingDialog()
+        public MainView()
         {
             InitializeComponent();
-            WindowStartupLocation = WindowStartupLocation.CenterScreen;
-        }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }

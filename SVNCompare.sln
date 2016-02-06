@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SVNCompare", "SVNCompare\SVNCompare.csproj", "{79613D64-52B4-4617-BA0E-B4D11D008633}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SVNModels", "SVNModels\SVNModels.csproj", "{59CFCE83-95DC-4A91-99C1-84A7091E4092}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{79613D64-52B4-4617-BA0E-B4D11D008633}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79613D64-52B4-4617-BA0E-B4D11D008633}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79613D64-52B4-4617-BA0E-B4D11D008633}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59CFCE83-95DC-4A91-99C1-84A7091E4092}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59CFCE83-95DC-4A91-99C1-84A7091E4092}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59CFCE83-95DC-4A91-99C1-84A7091E4092}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59CFCE83-95DC-4A91-99C1-84A7091E4092}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,59 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ViewModels="clr-namespace:SVNCompare.ViewModels" 
+        xmlns:Utility="clr-namespace:SVNCompare.Utility" 
+        x:Class="SVNCompare.Views.MainView"
+        Title="SVNCompare" Height="700" Width="1000"
+        WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <ViewModels:MainViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <Utility:CompareItemStatusConverter x:Key="ItemStatusConverter" />
+        <DataTemplate x:Key="GroupTemplate">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" >
+                <TextBlock Text="{Binding Name}" Padding="2" Width="120"></TextBlock>
+                <TextBlock Text="{Binding Path}" Padding="2" Width="250"></TextBlock>
+                <TextBlock Text="{Binding Status}" Width="100" Padding="2" Background="{Binding Status, Converter={StaticResource ItemStatusConverter}}"></TextBlock>
+                <Button Content="Set as Base" Width="100" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=3, AncestorType={x:Type Grid}}, Path=DataContext.btnSetItemAsBase}" CommandParameter="{Binding}"></Button>
+            </StackPanel>
+        </DataTemplate>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="54"/>
+            <RowDefinition Height="404*"/>
+            <RowDefinition Height="211*"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="btnCompare" Content="Compare" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="87" Height="32" Command="{Binding btnCompare}"/>
+        <CheckBox x:Name="chbUpdateSVN" Content="update working copies" HorizontalAlignment="Left" Margin="102,10,0,0" VerticalAlignment="Top" Width="186" Height="15" IsChecked="{Binding UpdateSVN}"/>
+        <CheckBox x:Name="chbUseFilters" Content="filter directories and files" HorizontalAlignment="Left" Margin="102,29,0,0" VerticalAlignment="Top" Width="186" Height="15" IsChecked="{Binding UseFilters}"/>
+        <Button x:Name="btnReload" Content="Reload" HorizontalAlignment="Right" Margin="0,10,116,0" VerticalAlignment="Top" Width="87" Height="32" Command="{Binding btnLoadGroups}"/>
+        <Button x:Name="btnConfiguration" Content="Configuration" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Height="32" Width="101" Command="{Binding btnConfiguration}"/>
+        <ListView x:Name="lvGroups" Margin="10,0" Grid.Row="1" ItemsSource="{Binding Groups.Groups}" SelectedItem="{Binding SelectedGroup, Mode=TwoWay}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Group Name" Width="200" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Items" Width="Auto">
+                        <GridViewColumn.CellTemplate >
+                            <DataTemplate>
+                                <ListView 
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Stretch"
+                                    ItemsSource="{Binding Items}" 
+                                    ItemTemplate="{StaticResource GroupTemplate}"
+                                    SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=3, AncestorType={x:Type Grid}}, Path=DataContext.SelectedItem}"
+                                    />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListBox Margin="10,36,102,10" Grid.Row="2" ItemsSource="{Binding SelectedItemCompareLog}" FontFamily="Courier New"/>
+        <Label Content="EBC KRIMI INTERFACE, FAT (comparing with DEV)" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="2" VerticalAlignment="Top" Width="364" FontWeight="Bold"/>
+
+    </Grid>
+</Window>
