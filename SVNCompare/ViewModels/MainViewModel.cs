@@ -16,7 +16,7 @@ namespace SVNCompare.ViewModels
 
     class MainViewModel : _BaseViewModel
     {
-        #region Properties
+        #region Properties for View
         public ICommand btnCompare { get; set; }
         public ICommand btnLoadGroups { get; set; }
         public ICommand btnConfiguration { get; set; }
@@ -86,8 +86,8 @@ namespace SVNCompare.ViewModels
                 if (_SelectedGroup != value)
                 {
                     _SelectedGroup = value;
+                    CompareInfoVM.SelectedGroup = _SelectedGroup;
                     RaisePropertyChanged("SelectedGroup");
-                    RaisePropertyChanged("SelectedItemCompareLog");
 
                 }
             }
@@ -105,28 +105,22 @@ namespace SVNCompare.ViewModels
                 if (_SelectedItem != value)
                 {
                     _SelectedItem = value;
+                    SelectedGroup = _SelectedItem.Group;
+                    CompareInfoVM.SelectedItem = _SelectedItem;
                     RaisePropertyChanged("SelectedItem");
-                    RaisePropertyChanged("SelectedItemCompareLog");
-
                 }
-            }
-        }
-
-        public ObservableCollection<String> SelectedItemCompareLog 
-        {
-            get
-            {
-                if (SelectedItem != null)
-                    return SelectedItem.CompareResult.Log;
-                else
-                    return null;
             }
         }
         #endregion
 
 
+
+        public CompareInfoViewModel CompareInfoVM { get; private set; }
+
+
         public MainViewModel()
         {
+            CompareInfoVM = new CompareInfoViewModel();
             LoadGroups(null);
 
             UpdateSVN = true;
@@ -171,7 +165,12 @@ namespace SVNCompare.ViewModels
 
         public void SetItemAsBase(object obj)
         {
-            Console.WriteLine(obj);
+            if (obj != null && obj is CompareItem)
+            {
+                SelectedItem = (obj as CompareItem);
+                SelectedItem.Group.SetDefaultItem(SelectedItem);
+                SelectedItem.Group.Compare();
+            }
         }
         #endregion
     }

@@ -45,6 +45,8 @@ namespace SVNModels
         public string Path { get; internal set; }
         public bool Default { get; internal set; }
 
+        public CompareGroup Group { get; internal set; }
+
         private CompareItemStatus _Status = CompareItemStatus.Unknown;
         public CompareItemStatus Status 
         {

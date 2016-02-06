@@ -46,6 +46,7 @@ namespace SVNModels
                     foreach (XmlNode xmlItem in xmlItems)
                     {
                         CompareItem newItem = new CompareItem();
+                        newItem.Group = newGroup;
                         newItem.Name = xmlItem.SelectSingleNode("name").InnerText;
                         newItem.Path = xmlItem.SelectSingleNode("path").InnerText;
 
@@ -54,7 +55,7 @@ namespace SVNModels
 
                         if (newItem.Default)
                         {
-                            newGroup.DefaultItem = newItem;
+                            newGroup.SetDefaultItem(newItem);
 
                             newItem.Status = CompareItemStatus.Base;
                         }

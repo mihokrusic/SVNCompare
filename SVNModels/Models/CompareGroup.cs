@@ -29,7 +29,9 @@ namespace SVNModels
     public class CompareGroup 
     {
         public string Name { get; set; }
-        public CompareItem DefaultItem { get; set; }
+
+        public CompareItem DefaultItem { get; private set; }
+
         public ObservableCollection<CompareItem> Items { get; set; }
 
         public CompareGroup()
@@ -163,6 +165,17 @@ namespace SVNModels
             }
 
             return true;
+        }
+
+        public void SetDefaultItem(CompareItem newDefaultItem)
+        {
+            DefaultItem = newDefaultItem;
+
+            foreach (CompareItem item in Items)
+            {
+                item.Status = (item == DefaultItem ? CompareItemStatus.Base : CompareItemStatus.Unknown);
+                item.CompareResult.Clear();
+            }
         }
     }
 }

@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ViewModels="clr-namespace:SVNCompare.ViewModels" 
         xmlns:Utility="clr-namespace:SVNCompare.Utility" 
+        xmlns:Controls="clr-namespace:SVNCompare.Controls"
         x:Class="SVNCompare.Views.MainView"
         Title="SVNCompare" Height="700" Width="1000"
         WindowStartupLocation="CenterScreen">
@@ -16,7 +17,10 @@
                 <TextBlock Text="{Binding Name}" Padding="2" Width="120"></TextBlock>
                 <TextBlock Text="{Binding Path}" Padding="2" Width="250"></TextBlock>
                 <TextBlock Text="{Binding Status}" Width="100" Padding="2" Background="{Binding Status, Converter={StaticResource ItemStatusConverter}}"></TextBlock>
-                <Button Content="Set as Base" Width="100" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=3, AncestorType={x:Type Grid}}, Path=DataContext.btnSetItemAsBase}" CommandParameter="{Binding}"></Button>
+                <Button Content="Set as Base" Width="100" 
+                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=3, AncestorType={x:Type Grid}}, Path=DataContext.btnSetItemAsBase}"
+                        CommandParameter="{Binding}">
+                </Button>
             </StackPanel>
         </DataTemplate>
 
@@ -52,8 +56,18 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListBox Margin="10,36,102,10" Grid.Row="2" ItemsSource="{Binding SelectedItemCompareLog}" FontFamily="Courier New"/>
-        <Label Content="EBC KRIMI INTERFACE, FAT (comparing with DEV)" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="2" VerticalAlignment="Top" Width="364" FontWeight="Bold"/>
+        <GridSplitter Grid.Row="2" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
+        <Controls:CompareInfoUserControl Grid.Row="2" Width="Auto" Height="Auto" Margin="0,5,0,0"/>
+        <!--
+        <ListBox Margin="10,31,133,10" Grid.Row="2" ItemsSource="{Binding GetSelectedItemCompareLog}" FontFamily="Courier New"/>
+        <Label Content="{Binding GetSelectedItemCompareInfo}" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="2" VerticalAlignment="Top" FontWeight="Bold"/>
+        <StackPanel HorizontalAlignment="Right" Height="170" Margin="0,31,10,0" Grid.Row="2" VerticalAlignment="Top" Width="118">
+            <ToggleButton x:Name="tgbIdentical" Content="Identical" HorizontalAlignment="Center" VerticalAlignment="Top" Width="110" Margin="0,0,0,10"/>
+            <ToggleButton x:Name="tgbDifferent" Content="Different" HorizontalAlignment="Center" VerticalAlignment="Top" Width="110" Margin="0,0,0,10"/>
+            <ToggleButton x:Name="tgbLeftUnique" Content="Left Unique" HorizontalAlignment="Center" VerticalAlignment="Top" Width="110" Margin="0,0,0,10"/>
+            <ToggleButton x:Name="tgbRightUnique" Content="Right Unique" HorizontalAlignment="Center" VerticalAlignment="Top" Width="110" Margin="0,0,0,10"/>
+        </StackPanel>
+        -->
 
     </Grid>
 </Window>
