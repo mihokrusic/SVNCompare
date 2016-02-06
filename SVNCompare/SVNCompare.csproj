@@ -65,14 +65,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\CompareGroup.cs" />
-    <Compile Include="Models\CompareGroups.cs" />
-    <Compile Include="Models\CompareItem.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\_BaseModel.cs" />
     <Compile Include="Utility\CompareItemStatusConverter.cs" />
     <Compile Include="Utility\FileComparator.cs" />
     <Compile Include="Utility\RelayCommand.cs" />
@@ -121,12 +117,20 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Views\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SVNModels\SVNModels.csproj">
+      <Project>{59cfce83-95dc-4a91-99c1-84a7091e4092}</Project>
+      <Name>SVNModels</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

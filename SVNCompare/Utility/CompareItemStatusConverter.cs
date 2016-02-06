@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SVNCompare.Models;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Globalization;
+using SVNModels;
 
 namespace SVNCompare.Utility
 {

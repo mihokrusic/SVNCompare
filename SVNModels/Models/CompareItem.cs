@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SVNCompare.Models
+namespace SVNModels
 {
     public enum CompareItemStatus { Base = 0, Unknown = 1, Identical = 2, Different = 3 }
     public enum CompareItemSVNUpdateStatus { None = 0, Success = 1, Error = 2 }

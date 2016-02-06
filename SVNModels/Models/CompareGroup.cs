@@ -8,11 +8,10 @@ using SharpSvn;
 using System.Windows;
 using System.IO;
 using System.Threading;
-using SVNCompare;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace SVNCompare.Models
+namespace SVNModels
 {
     public class CompareGroupArguments
     {

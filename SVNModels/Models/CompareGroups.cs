@@ -9,9 +9,9 @@ using System.Xml;
 using SharpSvn;
 using System.Collections.ObjectModel;
 
-namespace SVNCompare.Models
+namespace SVNModels
 {
-    class CompareGroups: _BaseModel
+    public class CompareGroups: _BaseModel
     {
         public ObservableCollection<CompareGroup> Groups { get; set; }
 

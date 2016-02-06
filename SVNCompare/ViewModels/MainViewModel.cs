@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using SVNCompare.Models;
+using SVNModels;
 using System.Collections.ObjectModel;
 
 namespace SVNCompare.ViewModels

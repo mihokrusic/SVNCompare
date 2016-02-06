@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SVNCompare.Models
+namespace SVNModels
 {
     public class _BaseModel : INotifyPropertyChanged
     {
