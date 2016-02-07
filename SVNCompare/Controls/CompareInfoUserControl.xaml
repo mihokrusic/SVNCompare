@@ -4,10 +4,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:ViewModels="clr-namespace:SVNCompare.ViewModels" 
+        xmlns:Utility="clr-namespace:SVNCompare.Utility" 
         x:Class="SVNCompare.Controls.CompareInfoUserControl" 
         mc:Ignorable="d" Height="349" Width="577">
+    <UserControl.Resources>
+        <Utility:CompareItemStatusConverter x:Key="ItemStatusConverter" />
+        <Utility:CompareFileStatusConverter x:Key="FileStatusConverter" />
+    </UserControl.Resources>
     <Grid Margin="0" DataContext="{Binding CompareInfoVM}">
-        <ListBox x:Name="lbCompareInfoLog" Margin="10,26,133,10" ItemsSource="{Binding GetItemCompareLog}" FontFamily="Courier New"/>
+        <ListView Margin="10,26,134,10"  ItemsSource="{Binding GetFileCompareResults}" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Status" Width="100">
+                        <GridViewColumn.CellTemplate >
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Status}" Width="100" Margin="0" Background="{Binding Status, Converter={StaticResource FileStatusConverter}}"></TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Left" Width="300" DisplayMemberBinding="{Binding FileLeft}"/>
+                    <GridViewColumn Header="Right" Width="300" DisplayMemberBinding="{Binding FileRight}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
         <Label Content="{Binding GetItemCompareInfo}" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" FontWeight="Bold">
         </Label>
         <StackPanel HorizontalAlignment="Right" Height="170" Margin="0,26,10,0" VerticalAlignment="Top" Width="118">

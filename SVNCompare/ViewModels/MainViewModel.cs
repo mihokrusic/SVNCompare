@@ -114,7 +114,6 @@ namespace SVNCompare.ViewModels
         #endregion
 
 
-
         public CompareInfoViewModel CompareInfoVM { get; private set; }
 
 
@@ -149,7 +148,7 @@ namespace SVNCompare.ViewModels
             try
             {
                 //_Groups.LoadFromXML("CompareGroups.xml");
-                _Groups.LoadFromXML(@"E:\WPF\SVNCompare\SVNCompare\CompareGroups.xml");
+                _Groups.LoadFromXML(@"CompareGroups.xml");
             }
             catch (FileNotFoundException e)
             {

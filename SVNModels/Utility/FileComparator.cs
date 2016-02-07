@@ -14,7 +14,7 @@ namespace SVNModels
         public static EFileCompareResult CompareFiles(FileInfo sourceFile, string pathSource, string pathTarget, bool checkOnlyUnique)
         {
             // Kreiramo full path na target lokaciji
-            string filePathAtTarget = String.Format(@"{0}\{1}", pathTarget, sourceFile.Name);
+            string filePathAtTarget = Path.Combine(pathTarget, sourceFile.Name);
 
             // Provjeravamo da fajl postoji na target lokaciji
             if (!File.Exists(filePathAtTarget))

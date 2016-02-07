@@ -102,33 +102,60 @@ namespace SVNModels
             foreach (FileInfo currentFile in currentFiles)
             {
                 // Compare datoteka
-                string sourcePath = (sourceToTarget ? result.source.Path : result.target.Path) + subFolder;
-                string targetPath = (sourceToTarget ? result.target.Path : result.source.Path) + subFolder;
+                string sourcePath = (sourceToTarget ? result.Source.Path : result.Target.Path) + subFolder;
+                string targetPath = (sourceToTarget ? result.Target.Path : result.Source.Path) + subFolder;
                 EFileCompareResult fileCompareResult = FileComparator.CompareFiles(currentFile, sourcePath, targetPath, !sourceToTarget);
 
                 if (fileCompareResult != EFileCompareResult.Ignore)
-                    result.totalFiles++;
+                    result.TotalFiles++;
 
                 switch (fileCompareResult)
                 {
                     case EFileCompareResult.Identical:
-                        result.identicalFiles++;
-                        result.Log.Add(String.Format("File \"{0}\" is identical.", currentFile.FullName));
+                        result.IdenticalFiles++;
+                        result.FileResults.Add(
+                            new CompareFileResult() { 
+                                Status = CompareFileStatus.Identical,
+                                FileLeft = Path.Combine(sourcePath, currentFile.Name),
+                                FileRight = Path.Combine(targetPath, currentFile.Name)
+                            }
+                        );
                         break;
                     case EFileCompareResult.Different:
-                        result.differentFiles++;
-                        result.Log.Add(String.Format("File \"{0}\" is different.", currentFile.FullName));
+                        result.DifferentFiles++;
+                        result.FileResults.Add(
+                            new CompareFileResult()
+                            {
+                                Status = CompareFileStatus.Different,
+                                FileLeft = Path.Combine(sourcePath, currentFile.Name),
+                                FileRight = Path.Combine(targetPath, currentFile.Name)
+                            }
+                        );
                         break;
                     case EFileCompareResult.Unique:
                         if (sourceToTarget)
                         {
-                            result.leftUniqueFiles++;
-                            result.Log.Add(String.Format("File \"{0}\" does not exist on path \"{1}\")", currentFile.FullName, result.target.Path + subFolder));
+                            result.LeftUniqueFiles++;
+                            result.FileResults.Add(
+                                new CompareFileResult()
+                                {
+                                    Status = CompareFileStatus.LeftUnique,
+                                    FileLeft = Path.Combine(sourcePath, currentFile.Name),
+                                    FileRight = ""
+                                }
+                            );
                         }
                         else
                         {
-                            result.rightUniqueFiles++;
-                            result.Log.Add(String.Format("File \"{0}\" does not exist on path \"{1}\")", currentFile.FullName, result.target.Path + subFolder));
+                            result.RightUniqueFiles++;
+                            result.FileResults.Add(
+                                new CompareFileResult()
+                                {
+                                    Status = CompareFileStatus.RightUnique,
+                                    FileLeft = "",
+                                    FileRight = Path.Combine(targetPath, currentFile.Name)
+                                }
+                            );
                         }
                         break;
                 }
@@ -152,8 +179,8 @@ namespace SVNModels
 
                 // Kreiramo result item za usporedbu ove lokacije sa source lokacijom
                 item.CompareResult.Clear();
-                item.CompareResult.source = DefaultItem;
-                item.CompareResult.target = item;
+                item.CompareResult.Source = DefaultItem;
+                item.CompareResult.Target = item;
 
                 // Uspoređujemo source --> target
                 _CompareFolders(sourceRoot, @"\", true, ref item.CompareResult);
@@ -161,7 +188,7 @@ namespace SVNModels
                 // Uspoređujemo target --> source
                 _CompareFolders(targetRoot, @"\", false, ref item.CompareResult);
 
-                item.Status = (item.CompareResult.identicalFiles != item.CompareResult.totalFiles ? CompareItemStatus.Different : CompareItemStatus.Identical);
+                item.Status = (item.CompareResult.IdenticalFiles != item.CompareResult.TotalFiles ? CompareItemStatus.Different : CompareItemStatus.Identical);
             }
 
             return true;

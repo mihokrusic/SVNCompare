@@ -10,30 +10,40 @@ namespace SVNModels
     public enum CompareItemStatus { Base = 0, Unknown = 1, Identical = 2, Different = 3 }
     public enum CompareItemSVNUpdateStatus { None = 0, Success = 1, Error = 2 }
 
+    public enum CompareFileStatus { Unknown = 0, Identical = 1, Different = 2, LeftUnique = 3, RightUnique = 4 }
+
+    public class CompareFileResult
+    {
+        public CompareFileStatus Status { get; internal set; }
+        public string FileLeft { get; internal set; }
+        public string FileRight { get; internal set; }
+    }
+
     public class CompareResultItem
     {
-        public CompareItem source { get; internal set; }
-        public CompareItem target { get; internal set; }
+        public CompareItem Source { get; internal set; }
+        public CompareItem Target { get; internal set; }
 
-        public ObservableCollection<String> Log { get; internal set; }
-        public int totalFiles { get; internal set; }
-        public int identicalFiles { get; internal set; }
-        public int differentFiles { get; internal set; }
-        public int leftUniqueFiles { get; internal set; }
-        public int rightUniqueFiles { get; internal set; }
+        public ObservableCollection<CompareFileResult> FileResults { get; internal set; }
+
+        public int TotalFiles { get; internal set; }
+        public int IdenticalFiles { get; internal set; }
+        public int DifferentFiles { get; internal set; }
+        public int LeftUniqueFiles { get; internal set; }
+        public int RightUniqueFiles { get; internal set; }
 
         public CompareResultItem()
         {
-            Log = new ObservableCollection<String>();
+            FileResults = new ObservableCollection<CompareFileResult>();
         }
 
         public void Clear()
         {
-            source = null;
-            target = null;
+            Source = null;
+            Target = null;
 
-            totalFiles = identicalFiles = differentFiles = leftUniqueFiles = rightUniqueFiles = 0;
-            Log.Clear();
+            TotalFiles = IdenticalFiles = DifferentFiles = LeftUniqueFiles = RightUniqueFiles = 0;
+            FileResults.Clear();
         }
     }
 

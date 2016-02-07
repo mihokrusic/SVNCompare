@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using SVNModels;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace SVNCompare.ViewModels
 {
@@ -24,6 +26,7 @@ namespace SVNCompare.ViewModels
                 {
                     _ShowIdenticalFiles = value;
                     RaisePropertyChanged("ShowIdenticalFiles");
+                    RefreshFileResults(false);
                 }
             }
         }
@@ -41,6 +44,7 @@ namespace SVNCompare.ViewModels
                 {
                     _ShowDifferentFiles = value;
                     RaisePropertyChanged("ShowDifferentFiles");
+                    RefreshFileResults(false);
                 }
             }
         }
@@ -58,6 +62,7 @@ namespace SVNCompare.ViewModels
                 {
                     _ShowLeftUniqueFiles = value;
                     RaisePropertyChanged("ShowLeftUniqueFiles");
+                    RefreshFileResults(false);
                 }
             }
         }
@@ -75,6 +80,7 @@ namespace SVNCompare.ViewModels
                 {
                     _ShowRightUniqueFiles = value;
                     RaisePropertyChanged("ShowRightUniqueFiles");
+                    RefreshFileResults(false);
                 }
             }
         }
@@ -91,7 +97,9 @@ namespace SVNCompare.ViewModels
                 if (_SelectedGroup != value)
                 {
                     _SelectedGroup = value;
+                    _SelectedItem = null;
                     RaisePropertyChanged("SelectedGroup");
+                    RaisePropertyChanged("SelectedItem");
                     RaisePropertyChanged("GetItemCompareInfo");
                     RaisePropertyChanged("GetItemCompareLog");
                 }
@@ -113,6 +121,9 @@ namespace SVNCompare.ViewModels
                     RaisePropertyChanged("SelectedItem");
                     RaisePropertyChanged("GetItemCompareInfo");
                     RaisePropertyChanged("GetItemCompareLog");
+
+                    // Sa izborom novog Item-a, refreshamo view za prikaz fajlova
+                    RefreshFileResults(true);
                 }
             }
         }
@@ -127,16 +138,22 @@ namespace SVNCompare.ViewModels
                     return "";
             }
         }
-        public ObservableCollection<String> GetItemCompareLog
+        public ObservableCollection<CompareFileResult> GetItemCompareLog
         {
             get
             {
+                Console.WriteLine("MIHO");
+
                 if (SelectedItem != null)
-                    return SelectedItem.CompareResult.Log;
+                {
+                    return SelectedItem.CompareResult.FileResults;
+                }
                 else
                     return null;
             }
         }
+
+        public ICollectionView GetFileCompareResults { get; private set; }
         #endregion
 
 
@@ -144,6 +161,32 @@ namespace SVNCompare.ViewModels
         {
             _ShowIdenticalFiles = false;
             _ShowDifferentFiles = _ShowLeftUniqueFiles = _ShowRightUniqueFiles = true;
+        }
+
+        public void RefreshFileResults(bool loadItem)
+        {
+            // Ako je odabran Item - kreiramo filtrirani view
+            if (loadItem || GetFileCompareResults == null)
+                GetFileCompareResults = CollectionViewSource.GetDefaultView(SelectedItem.CompareResult.FileResults);
+
+            // Uvijek radimo reload filtera
+            GetFileCompareResults.Filter = item =>
+            {
+                var checkItem = item as CompareFileResult;
+
+                if (checkItem == null)
+                    return false;
+
+                bool showFileResult =
+                    (ShowIdenticalFiles && checkItem.Status == CompareFileStatus.Identical) ||
+                    (ShowDifferentFiles && checkItem.Status == CompareFileStatus.Different) ||
+                    (ShowLeftUniqueFiles && checkItem.Status == CompareFileStatus.LeftUnique) ||
+                    (ShowRightUniqueFiles && checkItem.Status == CompareFileStatus.RightUnique);
+
+                return showFileResult;
+            };
+
+            RaisePropertyChanged("GetFileCompareResults");
         }
     }
 }

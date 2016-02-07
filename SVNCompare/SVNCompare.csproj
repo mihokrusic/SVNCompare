@@ -79,6 +79,7 @@
     <Compile Include="Controls\CompareInfoUserControl.xaml.cs">
       <DependentUpon>CompareInfoUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\CompareFileStatusConverter.cs" />
     <Compile Include="Utility\CompareItemStatusConverter.cs" />
     <Compile Include="Utility\FileComparator.cs" />
     <Compile Include="Utility\RelayCommand.cs" />
