@@ -27,7 +27,7 @@ namespace SVNCompare.ViewModels
         {
             get
             {
-                return _UpdateSVN;
+                return false; // TODO _UpdateSVN;
             }
             set
             {
@@ -44,7 +44,7 @@ namespace SVNCompare.ViewModels
         {
             get
             {
-                return _UseFilters;
+                return false; // TODO _UseFilters;
             }
             set
             {

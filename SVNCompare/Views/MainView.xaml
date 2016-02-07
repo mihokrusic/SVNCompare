@@ -12,7 +12,7 @@
     </Window.DataContext>
     <Window.Resources>
         <Utility:CompareItemStatusConverter x:Key="ItemStatusConverter" />
-        <Utility:CompareFileStatusConverter x:Key="FileStatusConverter" />        
+        <Utility:CompareFileStatusConverter x:Key="FileStatusConverter" />
         <DataTemplate x:Key="GroupTemplate">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" >
                 <TextBlock Text="{Binding Name}" Padding="2" Width="120"></TextBlock>
@@ -32,8 +32,8 @@
             <RowDefinition Height="211*"/>
         </Grid.RowDefinitions>
         <Button x:Name="btnCompare" Content="Compare" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="87" Height="32" Command="{Binding btnCompare}"/>
-        <CheckBox x:Name="chbUpdateSVN" Content="update working copies" HorizontalAlignment="Left" Margin="102,10,0,0" VerticalAlignment="Top" Width="186" Height="15" IsChecked="{Binding UpdateSVN}"/>
-        <CheckBox x:Name="chbUseFilters" Content="filter directories and files" HorizontalAlignment="Left" Margin="102,29,0,0" VerticalAlignment="Top" Width="186" Height="15" IsChecked="{Binding UseFilters}"/>
+        <CheckBox x:Name="chbUpdateSVN" Content="update working copies" HorizontalAlignment="Left" Margin="102,10,0,0" VerticalAlignment="Top" Width="186" Height="15" IsChecked="{Binding UpdateSVN}" IsEnabled="False"/>
+        <CheckBox x:Name="chbUseFilters" Content="filter directories and files" HorizontalAlignment="Left" Margin="102,29,0,0" VerticalAlignment="Top" Width="186" Height="15" IsChecked="{Binding UseFilters}" IsEnabled="False"/>
         <Button x:Name="btnReload" Content="Reload" HorizontalAlignment="Right" Margin="0,10,116,0" VerticalAlignment="Top" Width="87" Height="32" Command="{Binding btnLoadGroups}"/>
         <Button x:Name="btnConfiguration" Content="Configuration" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Height="32" Width="101" Command="{Binding btnConfiguration}"/>
         <ListView x:Name="lvGroups" Margin="10,0" Grid.Row="1" ItemsSource="{Binding Groups.Groups}" SelectedItem="{Binding SelectedGroup, Mode=TwoWay}">
