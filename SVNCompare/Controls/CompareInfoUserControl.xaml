@@ -18,7 +18,7 @@
                     <GridViewColumn Header="Status" Width="100">
                         <GridViewColumn.CellTemplate >
                             <DataTemplate>
-                                <TextBlock Text="{Binding Status}" Width="100" Margin="0" Background="{Binding Status, Converter={StaticResource FileStatusConverter}}"></TextBlock>
+                                <TextBlock Text="{Binding Status}" Width="100" Margin="-6, 0" Padding="2" Background="{Binding Status, Converter={StaticResource FileStatusConverter}}"></TextBlock>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
