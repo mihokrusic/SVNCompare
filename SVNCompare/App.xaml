@@ -1,8 +1,20 @@
 ﻿<Application x:Class="SVNCompare.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Utility="clr-namespace:SVNCompare.Utility"
              StartupUri="Views\MainView.xaml">
     <Application.Resources>
-         
+        <Utility:CompareItemStatusConverter x:Key="ItemStatusConverter" />
+        <DataTemplate x:Key="GroupTemplate">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" >
+                <TextBlock Text="{Binding Name}" Padding="2" Width="120"></TextBlock>
+                <TextBlock Text="{Binding Path}" Padding="2" Width="350"></TextBlock>
+                <TextBlock Text="{Binding Status}" Width="100" Padding="2" Background="{Binding Status, Converter={StaticResource ItemStatusConverter}}"></TextBlock>
+                <Button Content="Set as Base" Width="100" 
+                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=3, AncestorType={x:Type Grid}}, Path=DataContext.btnSetItemAsBase}"
+                        CommandParameter="{Binding}">
+                </Button>
+            </StackPanel>
+        </DataTemplate>
     </Application.Resources>
 </Application>
