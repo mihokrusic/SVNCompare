@@ -95,15 +95,15 @@ namespace SVNModels
                 if (dirChild.Name == ".svn") // TODO
                     continue;
 
-                _CompareFolders(dirChild, Path.Combine(subFolder, dirChild.Name, @"\"), sourceToTarget, ref result);
+                _CompareFolders(dirChild, subFolder + dirChild.Name + @"\", sourceToTarget, ref result);
             }
 
             // Uspoređujemo fajlove koje smo našli u ovom folderu
             foreach (FileInfo currentFile in currentFiles)
             {
                 // Compare datoteka
-                string sourcePath = (sourceToTarget ? result.Source.Path : result.Target.Path) + subFolder;
-                string targetPath = (sourceToTarget ? result.Target.Path : result.Source.Path) + subFolder;
+                string sourcePath = Path.Combine((sourceToTarget ? result.Source.Path : result.Target.Path), subFolder);
+                string targetPath = Path.Combine((sourceToTarget ? result.Target.Path : result.Source.Path), subFolder);
                 EFileCompareResult fileCompareResult = FileComparator.CompareFiles(currentFile, sourcePath, targetPath, !sourceToTarget);
 
                 if (fileCompareResult != EFileCompareResult.Ignore)
@@ -153,7 +153,7 @@ namespace SVNModels
                                 {
                                     Status = CompareFileStatus.RightUnique,
                                     FileLeft = "",
-                                    FileRight = Path.Combine(targetPath, currentFile.Name)
+                                    FileRight = Path.Combine(sourcePath, currentFile.Name)
                                 }
                             );
                         }
@@ -183,10 +183,10 @@ namespace SVNModels
                 item.CompareResult.Target = item;
 
                 // Uspoređujemo source --> target
-                _CompareFolders(sourceRoot, @"\", true, ref item.CompareResult);
+                _CompareFolders(sourceRoot, "", true, ref item.CompareResult);
 
                 // Uspoređujemo target --> source
-                _CompareFolders(targetRoot, @"\", false, ref item.CompareResult);
+                _CompareFolders(targetRoot, "", false, ref item.CompareResult);
 
                 item.Status = (item.CompareResult.IdenticalFiles != item.CompareResult.TotalFiles ? CompareItemStatus.Different : CompareItemStatus.Identical);
             }

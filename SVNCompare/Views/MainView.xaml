@@ -6,7 +6,9 @@
         xmlns:Controls="clr-namespace:SVNCompare.Controls"
         x:Class="SVNCompare.Views.MainView"
         Title="SVNCompare" Height="700" Width="1000"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        >
     <Window.DataContext>
         <ViewModels:MainViewModel/>
     </Window.DataContext>
@@ -16,7 +18,7 @@
         <DataTemplate x:Key="GroupTemplate">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" >
                 <TextBlock Text="{Binding Name}" Padding="2" Width="120"></TextBlock>
-                <TextBlock Text="{Binding Path}" Padding="2" Width="250"></TextBlock>
+                <TextBlock Text="{Binding Path}" Padding="2" Width="350"></TextBlock>
                 <TextBlock Text="{Binding Status}" Width="100" Padding="2" Background="{Binding Status, Converter={StaticResource ItemStatusConverter}}"></TextBlock>
                 <Button Content="Set as Base" Width="100" 
                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=3, AncestorType={x:Type Grid}}, Path=DataContext.btnSetItemAsBase}"
@@ -28,8 +30,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="54"/>
-            <RowDefinition Height="404*"/>
-            <RowDefinition Height="211*"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="21*"/>
         </Grid.RowDefinitions>
         <Button x:Name="btnCompare" Content="Compare" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="87" Height="32" Command="{Binding btnCompare}"/>
         <CheckBox x:Name="chbUpdateSVN" Content="update working copies" HorizontalAlignment="Left" Margin="102,10,0,0" VerticalAlignment="Top" Width="186" Height="15" IsChecked="{Binding UpdateSVN}" IsEnabled="False"/>
@@ -56,7 +58,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <GridSplitter Grid.Row="2" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
-        <Controls:CompareInfoUserControl Grid.Row="2" Width="Auto" Height="Auto" Margin="0,5,0,0"/>
+        <GridSplitter Grid.Row="2" Height="10" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
+        <Controls:CompareInfoUserControl Grid.Row="2" Width="Auto" Height="Auto" Margin="0,10,0,0"/>
     </Grid>
 </Window>

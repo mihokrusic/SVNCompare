@@ -22,8 +22,8 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Left" Width="300" DisplayMemberBinding="{Binding FileLeft}"/>
-                    <GridViewColumn Header="Right" Width="300" DisplayMemberBinding="{Binding FileRight}"/>
+                    <GridViewColumn Header="Left" Width="400" DisplayMemberBinding="{Binding FileLeft}"/>
+                    <GridViewColumn Header="Right" Width="400" DisplayMemberBinding="{Binding FileRight}"/>
                 </GridView>
             </ListView.View>
         </ListView>

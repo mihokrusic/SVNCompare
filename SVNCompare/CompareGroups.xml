@@ -1,68 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <groups>
   <group>
-    <name>EBC KRIMI INTERFACE</name>
+    <name>SVN1</name>
     <items>
       <item>
         <name>DEV</name>
-        <path>E:\SVN\Projects\ProjectA - 1</path>
+        <path>E:\SVN\Projects\1dev</path>
         <default>true</default>
       </item>
       <item>
         <name>FAT</name>
-        <path>E:\SVN\Projects\ProjectA - 2</path>
+        <path>E:\SVN\Projects\2fat</path>
       </item>
       <item>
         <name>UAT</name>
-        <path>E:\SVN\Projects\ProjectA - 3</path>
-      </item>
-      <item>
-        <name>PROD</name>
-        <path>E:\SVN\Projects\ProjectA - 4</path>
+        <path>E:\SVN\Projects\3uat</path>
       </item>
     </items>
-  </group>
+  </group>  
   <group>
-    <name>EBC IREF KRIMI INTERFACE</name>
+    <name>SVN2</name>
     <items>
       <item>
         <name>DEV</name>
-        <path>E:\SVN\Projects\ProjectA - 1</path>
+        <path>E:\SVN\Projects\A</path>
         <default>true</default>
       </item>
       <item>
         <name>FAT</name>
-        <path>E:\SVN\Projects\ProjectA - 2</path>
-      </item>
-      <item>
-        <name>UAT</name>
-        <path>E:\SVN\Projects\ProjectA - 3</path>
-      </item>
-      <item>
-        <name>PROD</name>
-        <path>E:\SVN\Projects\ProjectA - 4</path>
-      </item>
-    </items>
-  </group>
-  <group>
-    <name>EBS KYC</name>
-    <items>
-      <item>
-        <name>DEV</name>
-        <path>E:\SVN\Projects\ProjectA - 4</path>
-        <default>true</default>
-      </item>
-      <item>
-        <name>UAT</name>
-        <path>E:\SVN\Projects\ProjectA - 5</path>
-      </item>
-      <item>
-        <name>PROD</name>
-        <path>E:\SVN\Projects\ProjectA - 1</path>
-      </item>
-      <item>
-        <name>PROD</name>
-        <path>E:\SVN\Projects\ProjectA - 4</path>
+        <path>E:\SVN\Projects\B</path>
       </item>
     </items>
   </group>  
