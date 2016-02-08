@@ -180,8 +180,8 @@ namespace SVNCompare.ViewModels
                 bool showFileResult =
                     (ShowIdenticalFiles && checkItem.Status == CompareFileStatus.Identical) ||
                     (ShowDifferentFiles && checkItem.Status == CompareFileStatus.Different) ||
-                    (ShowLeftUniqueFiles && checkItem.Status == CompareFileStatus.LeftUnique) ||
-                    (ShowRightUniqueFiles && checkItem.Status == CompareFileStatus.RightUnique);
+                    (ShowLeftUniqueFiles && checkItem.Status == CompareFileStatus.Unique) ||
+                    (ShowRightUniqueFiles && checkItem.Status == CompareFileStatus.BaseUnique);
 
                 return showFileResult;
             };

@@ -116,8 +116,8 @@ namespace SVNModels
                         result.FileResults.Add(
                             new CompareFileResult() { 
                                 Status = CompareFileStatus.Identical,
-                                FileLeft = Path.Combine(sourcePath, currentFile.Name),
-                                FileRight = Path.Combine(targetPath, currentFile.Name)
+                                FileLeft = Path.Combine(targetPath, currentFile.Name),
+                                FileRight = Path.Combine(sourcePath, currentFile.Name)
                             }
                         );
                         break;
@@ -127,33 +127,33 @@ namespace SVNModels
                             new CompareFileResult()
                             {
                                 Status = CompareFileStatus.Different,
-                                FileLeft = Path.Combine(sourcePath, currentFile.Name),
-                                FileRight = Path.Combine(targetPath, currentFile.Name)
+                                FileLeft = Path.Combine(targetPath, currentFile.Name),
+                                FileRight = Path.Combine(sourcePath, currentFile.Name),
                             }
                         );
                         break;
                     case EFileCompareResult.Unique:
                         if (sourceToTarget)
                         {
-                            result.LeftUniqueFiles++;
+                            result.UniqueFiles++;
                             result.FileResults.Add(
                                 new CompareFileResult()
                                 {
-                                    Status = CompareFileStatus.LeftUnique,
-                                    FileLeft = Path.Combine(sourcePath, currentFile.Name),
-                                    FileRight = ""
+                                    Status = CompareFileStatus.BaseUnique,
+                                    FileLeft = "",
+                                    FileRight = Path.Combine(sourcePath, currentFile.Name)
                                 }
                             );
                         }
                         else
                         {
-                            result.RightUniqueFiles++;
+                            result.BaseUniqueFiles++;
                             result.FileResults.Add(
                                 new CompareFileResult()
                                 {
-                                    Status = CompareFileStatus.RightUnique,
-                                    FileLeft = "",
-                                    FileRight = Path.Combine(sourcePath, currentFile.Name)
+                                    Status = CompareFileStatus.Unique,
+                                    FileLeft = Path.Combine(sourcePath, currentFile.Name),
+                                    FileRight = ""
                                 }
                             );
                         }

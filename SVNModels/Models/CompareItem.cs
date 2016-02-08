@@ -10,7 +10,7 @@ namespace SVNModels
     public enum CompareItemStatus { Base = 0, Unknown = 1, Identical = 2, Different = 3 }
     public enum CompareItemSVNUpdateStatus { None = 0, Success = 1, Error = 2 }
 
-    public enum CompareFileStatus { Unknown = 0, Identical = 1, Different = 2, LeftUnique = 3, RightUnique = 4 }
+    public enum CompareFileStatus { Unknown = 0, Identical = 1, Different = 2, Unique = 3, BaseUnique = 4 }
 
     public class CompareFileResult
     {
@@ -29,8 +29,8 @@ namespace SVNModels
         public int TotalFiles { get; internal set; }
         public int IdenticalFiles { get; internal set; }
         public int DifferentFiles { get; internal set; }
-        public int LeftUniqueFiles { get; internal set; }
-        public int RightUniqueFiles { get; internal set; }
+        public int UniqueFiles { get; internal set; }
+        public int BaseUniqueFiles { get; internal set; }
 
         public CompareResultItem()
         {
@@ -42,7 +42,7 @@ namespace SVNModels
             Source = null;
             Target = null;
 
-            TotalFiles = IdenticalFiles = DifferentFiles = LeftUniqueFiles = RightUniqueFiles = 0;
+            TotalFiles = IdenticalFiles = DifferentFiles = UniqueFiles = BaseUniqueFiles = 0;
             FileResults.Clear();
         }
     }

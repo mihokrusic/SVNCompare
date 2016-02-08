@@ -25,8 +25,8 @@ namespace SVNCompare.Utility
                     return new SolidColorBrush(Color.FromRgb(198, 239, 206));
                 case CompareFileStatus.Different:
                     return new SolidColorBrush(Color.FromRgb(255, 199, 206));
-                case CompareFileStatus.LeftUnique:
-                case CompareFileStatus.RightUnique:
+                case CompareFileStatus.Unique:
+                case CompareFileStatus.BaseUnique:
                     return new SolidColorBrush(Color.FromRgb(163, 221, 255));
                 case CompareFileStatus.Unknown:
                     return new SolidColorBrush(Colors.White);
