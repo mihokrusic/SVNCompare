@@ -112,6 +112,7 @@ namespace SVNModels
                 switch (fileCompareResult)
                 {
                     case EFileCompareResult.Identical:
+                        // Datoteke su identične
                         result.IdenticalFiles++;
                         result.FileResults.Add(
                             new CompareFileResult() { 
@@ -122,6 +123,7 @@ namespace SVNModels
                         );
                         break;
                     case EFileCompareResult.Different:
+                        // Datoteke su različite
                         result.DifferentFiles++;
                         result.FileResults.Add(
                             new CompareFileResult()
@@ -133,8 +135,10 @@ namespace SVNModels
                         );
                         break;
                     case EFileCompareResult.Unique:
+                        // Datoteka postoji samo na jednoj lokaciji
                         if (sourceToTarget)
                         {
+                            // Postoji samo u Base lokaciji (lokaciji sa kojom se ostale uspoređuju)
                             result.UniqueFiles++;
                             result.FileResults.Add(
                                 new CompareFileResult()
@@ -147,6 +151,7 @@ namespace SVNModels
                         }
                         else
                         {
+                            // Postoji samo u trenutnoj lokaciji (nema datoteke u base lokaciji)
                             result.BaseUniqueFiles++;
                             result.FileResults.Add(
                                 new CompareFileResult()
